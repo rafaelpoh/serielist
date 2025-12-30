@@ -13,77 +13,77 @@ const trailerModal = document.getElementById('trailer-modal');
 const trailerIframe = document.getElementById('trailer-iframe');
 const closeButton = document.querySelector('.close-button');
 
-// Função para exibir os filmes na tela
-function displayMovies(movies, container) {
+// Função para exibir as séries na tela
+function displaySeries(series, container) {
     container.innerHTML = ''; // Limpa o container
 
-    if (movies.length === 0) {
-        container.innerHTML = '<p>Nenhum filme encontrado.</p>';
+    if (series.length === 0) {
+        container.innerHTML = '<p>Nenhuma série encontrada.</p>';
         return;
     }
 
-    movies.forEach(movie => {
-        if (movie.poster_path) {
-            const movieCard = document.createElement('div');
-            movieCard.classList.add('movie-card');
-            movieCard.dataset.movieId = movie.id; // Adiciona o ID do filme ao card
+    series.forEach(serie => {
+        if (serie.poster_path) {
+            const serieCard = document.createElement('div');
+            serieCard.classList.add('movie-card'); // Manter a classe para o estilo
+            serieCard.dataset.serieId = serie.id; // Adiciona o ID da série ao card
 
-            movieCard.addEventListener('click', () => {
-                console.log(`Card clicado! ID do filme: ${movie.id}`);
-                openTrailerModal(movie.id);
+            serieCard.addEventListener('click', () => {
+                console.log(`Card clicado! ID da série: ${serie.id}`);
+                openTrailerModal(serie.id);
             });
 
-            const movieImage = document.createElement('img');
-            movieImage.src = `${imageBaseUrl}${movie.poster_path}`;
-            movieImage.alt = movie.title;
+            const serieImage = document.createElement('img');
+            serieImage.src = `${imageBaseUrl}${serie.poster_path}`;
+            serieImage.alt = serie.name;
 
-            const movieInfo = document.createElement('div');
-            movieInfo.classList.add('movie-card-info');
+            const serieInfo = document.createElement('div');
+            serieInfo.classList.add('movie-card-info');
 
-            const movieTitle = document.createElement('h2');
-            movieTitle.classList.add('movie-title');
-            movieTitle.textContent = movie.title;
+            const serieTitle = document.createElement('h2');
+            serieTitle.classList.add('movie-title');
+            serieTitle.textContent = serie.name;
 
-            movieInfo.appendChild(movieTitle);
-            movieCard.appendChild(movieImage);
-            movieCard.appendChild(movieInfo);
+            serieInfo.appendChild(serieTitle);
+            serieCard.appendChild(serieImage);
+            serieCard.appendChild(serieInfo);
 
-            container.appendChild(movieCard);
+            container.appendChild(serieCard);
         }
     });
 }
 
 // Função para buscar dados da API e chamar a exibição
-async function fetchAndPopulateMovies(endpoint, container) {
+async function fetchAndPopulateSeries(endpoint, container) {
     const apiUrl = `${apiBaseUrl}${endpoint}&api_key=${apiKey}&language=pt-BR&page=1`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error(`Erro na API: ${response.statusText}`);
         const data = await response.json();
-        displayMovies(data.results, container);
+        displaySeries(data.results, container);
     } catch (error) {
-        console.error(`Erro ao buscar filmes:`, error);
-        container.innerHTML = '<p>Não foi possível carregar os filmes.</p>';
+        console.error(`Erro ao buscar séries:`, error);
+        container.innerHTML = '<p>Não foi possível carregar as séries.</p>';
     }
 }
 
-// Função para mostrar a visualização padrão (Em cartaz e Próximos)
+// Função para mostrar a visualização padrão (Séries no ar e Populares)
 function showDefaultView() {
     mainContent.innerHTML = `
         <section class="movie-category">
-            <h2>Em Cartaz</h2>
-            <div id="now-playing-container" class="movie-grid"></div>
+            <h2>Séries no Ar</h2>
+            <div id="on-the-air-container" class="movie-grid"></div>
         </section>
         <section class="movie-category">
-            <h2>Próximos Lançamentos</h2>
-            <div id="upcoming-container" class="movie-grid"></div>
+            <h2>Séries Populares</h2>
+            <div id="popular-container" class="movie-grid"></div>
         </section>
     `;
-    const nowPlayingContainer = document.getElementById('now-playing-container');
-    const upcomingContainer = document.getElementById('upcoming-container');
+    const onTheAirContainer = document.getElementById('on-the-air-container');
+    const popularContainer = document.getElementById('popular-container');
 
-    fetchAndPopulateMovies(`/movie/now_playing?`, nowPlayingContainer);
-    fetchAndPopulateMovies(`/movie/upcoming?`, upcomingContainer);
+    fetchAndPopulateSeries(`/tv/on_the_air?`, onTheAirContainer);
+    fetchAndPopulateSeries(`/tv/popular?`, popularContainer);
 }
 
 // Função para buscar e mostrar os resultados da pesquisa
@@ -95,7 +95,7 @@ function showSearchResults(query) {
         </section>
     `;
     const searchResultsContainer = document.getElementById('search-results-container');
-    fetchAndPopulateMovies(`/search/movie?query=${encodeURIComponent(query)}`, searchResultsContainer);
+    fetchAndPopulateSeries(`/search/tv?query=${encodeURIComponent(query)}`, searchResultsContainer);
 }
 
 // Event listener para o formulário de busca
@@ -115,8 +115,8 @@ searchForm.addEventListener('submit', (e) => {
 document.addEventListener('DOMContentLoaded', showDefaultView);
 
 // Funções do Modal de Trailer
-async function openTrailerModal(movieId) {
-    const apiUrl = `${apiBaseUrl}/movie/${movieId}/videos?api_key=${apiKey}&language=pt-BR`;
+async function openTrailerModal(serieId) {
+    const apiUrl = `${apiBaseUrl}/tv/${serieId}/videos?api_key=${apiKey}&language=pt-BR`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error(`Erro na API de vídeos: ${response.statusText}`);
@@ -129,7 +129,7 @@ async function openTrailerModal(movieId) {
             trailerIframe.src = `https://www.youtube.com/embed/${trailer.key}?autoplay=1`;
             trailerModal.style.display = 'flex';
         } else {
-            alert('Trailer não disponível para este filme.');
+            alert('Trailer não disponível para esta série.');
         }
     } catch (error) {
         console.error('Erro ao buscar trailer:', error);
