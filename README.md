@@ -2,6 +2,9 @@
 
 SerieList é uma aplicação web simples para explorar séries, ver as que estão no ar, as mais populares e buscar por títulos específicos. Além disso, é possível assistir aos trailers das séries diretamente na aplicação.
 
+![Foto do projeto](serieslist1.jpg)
+![Foto do projeto](serieslist2.jpg)
+
 ## Funcionalidades
 
 *   **Séries no Ar:** Veja uma lista das séries atualmente em exibição.
@@ -27,12 +30,19 @@ Para rodar este projeto localmente, siga os passos abaixo:
 
 **Nota:** Certifique-se de ter uma conexão com a internet, pois a aplicação busca dados da TMDb API.
 
+## Como Usar
+
+*   A página principal exibirá as séries "No Ar" e "Populares".
+*   Use a barra de pesquisa no topo para procurar por uma série específica.
+*   Clique no pôster de uma série para assistir ao seu trailer.
+
 ## Estrutura do Projeto
 
 *   `index.html`: O arquivo principal HTML que define a estrutura da página.
 *   `style.css`: Contém todos os estilos CSS para a aplicação.
 *   `script.js`: Contém a lógica JavaScript para buscar dados da API, exibir séries, lidar com a busca e gerenciar o modal de trailers.
-*   `movie.png`: O ícone/logo utilizado no cabeçalho da aplicação.
+*   `serieslist1.jpg`: Imagem do projeto.
+*   `serieslist2.jpg`: Imagem do projeto.
 
 ## Organização do Código
 
@@ -42,4 +52,4 @@ O código está organizado em três arquivos principais para facilitar a manuten
 *   **CSS (`style.css`):** Responsável pela apresentação visual, garantindo um design moderno e responsivo.
 *   **JavaScript (`script.js`):** Gerencia a interatividade, desde a busca de séries até a exibição dinâmica dos trailers. As funções são modularizadas para clareza e reusabilidade.
 
----
+**Importante:** A chave da API do TMDb está diretamente no arquivo `script.js`. Para uma aplicação real, é recomendado armazená-la de forma mais segura, como uma variável de ambiente em um servidor.
