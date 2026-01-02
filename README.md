@@ -3,7 +3,6 @@
 SerieList é uma aplicação web simples para explorar séries, ver as que estão no ar, as mais populares e buscar por títulos específicos. Além disso, é possível assistir aos trailers das séries diretamente na aplicação.
 
 ![Foto do projeto](serieslist1.jpg)
-![Foto do projeto](serieslist2.jpg)
 
 ## Funcionalidades
 
